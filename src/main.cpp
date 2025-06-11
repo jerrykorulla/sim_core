@@ -1,24 +1,36 @@
 #include "sim_core/Gain.h"
+#include "sim_core/InputBuffer.h"
+#include "sim_core/Integrator.h"
+#include "sim_core/OutputBuffer.h"
 #include "sim_core/Model.h"
 #include <iostream>
+#include <vector>
 
 // Demonstration
 int main() {
-    Gain<double, 1> gainAmplifier1(2.0);
-    Gain<double, 1> gainAmplifier2(4.0);
+    std::vector<double> inputValues{0,1,2,3,4,5,6,7,8,9,10};
+    InputBuffer<double> inputBuffer(inputValues);
+    Gain<double, 1> gain1(2.0);
+    Integrator<double, 1> integrator(0.0, 1.0); // initial value 0.0, step size 1.0
+    OutputBuffer<double> outputBuffer;
 
-    double inputSignal = 1;
-    gainAmplifier1.setInput(&inputSignal, 0);  // Set input for the first gain block
-    Model model;
-    model.addBlock(&gainAmplifier1);
-    model.addBlock(&gainAmplifier2);
-    model.addLink(&gainAmplifier1, &gainAmplifier2, 0, 0);
+    Model model(inputValues.size());
+    model.addBlock(&inputBuffer);
+    model.addBlock(&gain1);
+    model.addBlock(&integrator);
+    model.addBlock(&outputBuffer);
+    model.addLink(&inputBuffer, &gain1, 0, 0);
+    model.addLink(&gain1, &integrator, 0, 0);
+    model.addLink(&integrator, &outputBuffer, 0, 0);
     model.run();
 
-    const double* result = static_cast<const double*>(gainAmplifier2.getOutput(0));
-    if (result) {
-        std::cout << "Amplified output: " << *result << std::endl;  // Should print 7.0
+    // Print all integrated outputs
+    const std::vector<double>& results = outputBuffer.getBuffer();
+    std::cout << "Integrated outputs: ";
+    for (double v : results) {
+        std::cout << v << " ";
     }
+    std::cout << std::endl;
 
     return 0;
 }

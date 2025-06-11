@@ -4,6 +4,12 @@
 
 class Model {
    public:
+    Model(size_t steps = 1) : steps_(steps) {}
+
+    void setSteps(size_t steps) {
+        steps_ = steps;
+    }
+
     void addBlock(Block* block) {
         blocks_.push_back(block);
     }
@@ -16,7 +22,9 @@ class Model {
 
     void run() {
         initialize();
-        step();
+        for (size_t i = 0; i < steps_; ++i) {
+            step();
+        }
         terminate();
     }
 
@@ -30,6 +38,8 @@ class Model {
     void step() {
         for (auto& block : blocks_) {
             block->output();
+        }
+        for (auto& block : blocks_) {
             block->update();
         }
     }
@@ -41,4 +51,5 @@ class Model {
     }
 
     std::vector<Block*> blocks_;
+    size_t steps_;
 };

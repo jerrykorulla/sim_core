@@ -6,7 +6,7 @@
 
 // Gain block that multiplies input by a constant gain factor
 template <typename T, size_t N>
-class Gain : public Block<T> {
+class Gain : public Block {
    public:
     explicit Gain(T gainFactor) : gain_(gainFactor) {
     }
@@ -34,15 +34,15 @@ class Gain : public Block<T> {
         // No resources to release
     }
 
-    void setInput(const T* input, size_t index) override {
+    void setInput(const void* input, size_t index) override {
         if (index < N) {
-            inputs_[index] = const_cast<T*>(input);  // Unsafe cast, but works here
+            inputs_[index] = static_cast<const T*>(input);
         }
     }
 
-    const T* getOutput(size_t index) const override {
+    const void* getOutput(size_t index) const override {
         if (index < N) {
-            return &outputs_[index];
+            return static_cast<const void*>(&outputs_[index]);
         }
         return nullptr;
     }
@@ -50,5 +50,5 @@ class Gain : public Block<T> {
    private:
     T gain_;
     std::array<T, N> outputs_{};
-    std::array<T*, N> inputs_{};
+    std::array<const T*, N> inputs_{};
 };

@@ -3,7 +3,6 @@
 #include <cstddef>
 
 // Abstract base class for signal processing blocks
-template <typename T>
 class Block {
 public:
     virtual ~Block() = default;
@@ -13,6 +12,6 @@ public:
     virtual void update() = 0;
     virtual void terminate() = 0;
 
-    virtual void setInput(const T* input, size_t index) = 0;
-    virtual const T* getOutput(size_t index) const = 0;
+    virtual void setInput(const void* input, size_t index) = 0;
+    virtual const void* getOutput(size_t index) const = 0;
 };

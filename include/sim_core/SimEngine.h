@@ -4,10 +4,15 @@
 
 class SimEngine {
    public:
-    SimEngine(size_t steps = 1) : steps_(steps) {}
+    SimEngine(size_t steps = 1) : steps_(steps) {
+    }
 
     void setSteps(size_t steps) {
         steps_ = steps;
+    }
+
+    size_t getSteps() const {
+        return steps_;
     }
 
     void addBlock(Block* block) {
@@ -28,7 +33,6 @@ class SimEngine {
         terminate();
     }
 
-   private:
     void initialize() {
         for (auto& block : blocks_) {
             block->initialize();
@@ -50,6 +54,7 @@ class SimEngine {
         }
     }
 
+   private:
     std::vector<Block*> blocks_;
     size_t steps_;
 };

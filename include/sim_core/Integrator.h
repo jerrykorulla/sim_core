@@ -48,6 +48,10 @@ class Integrator : public Block {
         return nullptr;
     }
 
+    void setState(T value) {
+        states_[0] = value;
+    }
+
    private:
     std::array<T, N> states_{};
     std::array<T, N> outputs_{};

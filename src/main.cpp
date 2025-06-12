@@ -1,4 +1,4 @@
-#include "sim_core/BouncingBallSimulation.h"
+#include "BouncingBallSimulation.h"
 #include <fstream>
 #include <iostream>
 #include <vector>

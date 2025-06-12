@@ -9,7 +9,6 @@ BouncingBallSimulation::BouncingBallSimulation(double stepSize, double stopTime,
       groundHit_(0.0, Compare<double>::Mode::Less),
       restitution_(-restitutionCoeff) // Negative to reverse velocity on bounce
 {
-    // Connect gravity to velocity integrator
     simEngine_.addBlock(&gravity_);
     simEngine_.addBlock(&velocityIntegrator_);
     simEngine_.addBlock(&positionIntegrator_);
@@ -21,8 +20,6 @@ BouncingBallSimulation::BouncingBallSimulation(double stepSize, double stopTime,
     simEngine_.addLink(&velocityIntegrator_, &positionIntegrator_, 0, 0);
     simEngine_.addLink(&positionIntegrator_, &positionOutput_, 0, 0);
     simEngine_.addLink(&positionIntegrator_, &groundHit_, 0, 0);
-
-    // The following logic is not handled by links, but by custom logic in run()
 }
 
 void BouncingBallSimulation::run() {

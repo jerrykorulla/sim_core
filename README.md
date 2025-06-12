@@ -1,62 +1,75 @@
-# my_cpp_project/README.md
+# sim_core
 
-# My C++ Project
+A modular C++ simulation framework for building and running block-based dynamic system models, such as a bouncing ball, signal processing chains, and more. The framework is designed for extensibility and clarity, using modern C++ and a simple block-linking API.
 
-This is a simple C++ project that demonstrates the use of CMake for building a "Hello World" application. The project is structured to separate header files and source files, making it easy to manage and extend.
+## Features
 
-## Project Structure
+- **Block-based simulation engine**: Compose systems from reusable blocks (integrators, gains, constants, comparators, buffers, etc.).
+- **Step-based simulation**: Discrete-time simulation with configurable step size and duration.
+- **Easy extensibility**: Add your own blocks by inheriting from the `Block` base class.
+- **Output to CSV**: Results can be saved for plotting in Python, Excel, or other tools.
+- **MIT License**: Free and open to use for anyone.
+
+## Example: Bouncing Ball Simulation
+
+The framework includes a bouncing ball example that models gravity, velocity, position, and bounces with energy loss.
 
 ```
-my_cpp_project/
-├── CMakeLists.txt
-├── README.md
-├── LICENSE
-├── .gitignore
-├── include/
-│   └── my_cpp_project/
-│       ├── utils.hpp
-│       └── core.hpp
-└── src/
-    ├── main.cpp
-    ├── utils.cpp
-    └── core.cpp
+gravity --> [velocity integrator] --> [position integrator] --> [ground compare]
+                                                    |                |
+                                                    v                |
+                                              [output buffer] <-----/
 ```
 
 ## Building the Project
 
-To build the project, follow these steps:
-
-1. Ensure you have CMake installed on your system.
+1. Ensure you have CMake and a C++17 (or newer) compiler installed.
 2. Open a terminal and navigate to the project directory:
    ```
-   cd my_cpp_project
+   cd sim_core
    ```
-3. Create a build directory:
+3. Create a build directory and configure the project:
    ```
    mkdir build
    cd build
-   ```
-4. Run CMake to configure the project:
-   ```
    cmake ..
    ```
-5. Build the project:
+4. Build the project:
    ```
    cmake --build .
    ```
 
-## Running the Application
+## Running the Example
 
-After building the project, you can run the application with the following command:
+After building, run the simulation:
 
 ```
-./my_cpp_project
+./sim_core
+```
+
+This will generate a `results.csv` file with the simulation output.
+
+## Plotting Results
+
+You can plot the results using Python and matplotlib:
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("results.csv")
+plt.plot(df["step"], df["value"])
+plt.xlabel("Step")
+plt.ylabel("Position")
+plt.title("Bouncing Ball Simulation")
+plt.grid()
+plt.show()
 ```
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+This project is licensed under the MIT License. See the LICENSE file for details.
 
 ## Acknowledgments
 
-This project serves as a basic template for C++ projects using CMake. Feel free to modify and expand upon it as needed.
+Inspired by block-diagram simulation tools and designed for educational and research use. Contributions and suggestions are welcome!

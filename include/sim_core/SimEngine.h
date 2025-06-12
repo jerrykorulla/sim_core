@@ -2,9 +2,9 @@
 #include "sim_core/Block.h"
 #include <vector>
 
-class Model {
+class SimEngine {
    public:
-    Model(size_t steps = 1) : steps_(steps) {}
+    SimEngine(size_t steps = 1) : steps_(steps) {}
 
     void setSteps(size_t steps) {
         steps_ = steps;
